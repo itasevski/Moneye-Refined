@@ -1,6 +1,8 @@
 # Moneye
 
-Cross-platform money management mobile application written in Flutter.
+Cross-platform money management mobile application written in Flutter.\
+This is a refined version of the original Moneye app that only contains relevant features. The Google Maps functionality has been removed, along with other irrelevant icons and features.\
+The original Moneye source code is available here: https://github.com/itasevski/Moneye
 
 - In order for the application to work, you need to create a Google API key that will be associated with a project in your Google Cloud account. For that, visit https://developers.google.com/maps/documentation/javascript/get-api-key.
 - After you create your API key, make sure the Places, Maps Static, SDK for IOS & Android and Distances APIs are enabled in your Google Cloud project.
