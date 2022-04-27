@@ -1,9 +1,6 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:intl/intl.dart';
-import 'package:planner/moneye_camera.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'moneye_balance.dart';
@@ -20,12 +17,8 @@ typedef BudgetCallback = void Function(double budget);
 typedef SavingsCallback = void Function(double savingsAmount);
 
 class Moneye extends StatefulWidget {
-  final List<CameraDescription> cameras;
-
-  const Moneye(this.cameras);
-
   @override
-  State<Moneye> createState() => _MoneyeState(this.cameras);
+  State<Moneye> createState() => _MoneyeState();
 }
 
 class _MoneyeState extends State<Moneye> {
@@ -44,17 +37,6 @@ class _MoneyeState extends State<Moneye> {
 
   double budgetPercentage = 0.000;
   double savingsPercentage = 0.000;
-
-  final List<CameraDescription> cameras;
-
-  LocationSettings locationSettings = AndroidSettings(
-    accuracy: LocationAccuracy.high,
-    distanceFilter: 100,
-    forceLocationManager: true,
-    intervalDuration: const Duration(seconds: 10),
-  );
-
-  _MoneyeState(this.cameras);
 
   @override
   void initState() {
@@ -220,37 +202,6 @@ class _MoneyeState extends State<Moneye> {
     _setFinancialData("currentSavingsAmount", savingsAmount);
   }
 
-  Future<Position> _determineCurrentPosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return Future.error('Location services are disabled.');
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied');
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
-    }
-
-    return await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-  }
-
-  void _openCamera() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => CameraScreen(cameras)));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -274,12 +225,6 @@ class _MoneyeState extends State<Moneye> {
                 child: IconButton(
                   icon: Icon(Icons.equalizer),
                   onPressed: _showStatistics,
-                )),
-            Tooltip(
-                message: "Open camera",
-                child: IconButton(
-                  icon: Icon(Icons.camera),
-                  onPressed: _openCamera,
                 ))
           ],
         ),
@@ -413,10 +358,5 @@ class _MoneyeState extends State<Moneye> {
             ),
           ),
         ));
-  }
-
-  void _clearPreferences() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.clear();
   }
 }
