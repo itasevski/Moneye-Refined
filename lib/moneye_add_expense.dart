@@ -28,6 +28,7 @@ class _AddExpenseState extends State<AddExpense> {
   String selectedCategory = "Food";
 
   final amountController = TextEditingController();
+  final descriptionController = TextEditingController();
 
   DateTime createdOn = DateTime.now();
   String formattedDate = "";
@@ -69,11 +70,12 @@ class _AddExpenseState extends State<AddExpense> {
       });
     }
 
-    expensesCallback(amountController.text, selectedCategory, selectedCurrency,
+    expensesCallback(amountController.text, descriptionController.text, selectedCategory, selectedCurrency,
         formattedDate);
 
     setState(() {
       amountController.text = "";
+      descriptionController.text = "";
       selectedCategory = "Food";
       selectedCurrency = "EUR";
       createdOn = DateTime.now();
@@ -130,6 +132,14 @@ class _AddExpenseState extends State<AddExpense> {
                             filled: true,
                             hintText: 'Enter amount',
                             labelText: 'Expense Amount',
+                          ),
+                        ),
+                        TextFormField(
+                          controller: descriptionController,
+                          decoration: const InputDecoration(
+                            filled: true,
+                            hintText: 'Enter description',
+                            labelText: 'Short description',
                           ),
                         ),
                         DropdownButton<String>(

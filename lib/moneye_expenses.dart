@@ -7,7 +7,7 @@ import 'dart:core';
 import 'moneye_home.dart';
 
 typedef ExpensesAddCallback = void Function(
-    String amount, String category, String currency, String date);
+    String amount, String description, String category, String currency, String date);
 
 class Expenses extends StatefulWidget {
   final TotalExpenses callback;
@@ -70,10 +70,11 @@ class ExpensesState extends State<Expenses> {
   }
 
   void _addExpense(
-      String amount, String category, String currency, String date) {
+      String amount, String description, String category, String currency, String date) {
     setState(() {
       expenses.add({
         "amount": amount,
+        "description": description,
         "category": category,
         "currency": currency,
         "date": date
@@ -203,7 +204,9 @@ class ExpensesState extends State<Expenses> {
                               style: TextStyle(
                                   fontSize: 27, fontWeight: FontWeight.bold))),
                       subtitle: Text(
-                          expenses[index]["category"].toString() +
+                          expenses[index]["description"].toString() +
+                              "\n" +
+                              expenses[index]["category"].toString() +
                               "\n" +
                               expenses[index]["date"].toString(),
                           style: TextStyle(fontSize: 21)),
